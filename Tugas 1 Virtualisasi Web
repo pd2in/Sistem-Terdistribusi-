@@ -1,0 +1,6 @@
+Tugas 1 Virtulisasi Web
+NAMA  :FIRMAN ARIEF
+NIM   :1203210110
+
+1. membuat microservice 1
+lxc-create --name microservice1 --template download -- --dist "ubuntu" --release "focal" --arch amd64

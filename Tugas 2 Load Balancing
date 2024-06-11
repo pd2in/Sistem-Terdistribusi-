@@ -2,3 +2,72 @@ TUGAS 2 LOAD BALANCING
 NAMA  :FIRMAN ARIEF
 NIM  : 1203210110
 
+1. create microservice3 
+    sudo lxc-create -n microservice3 -t download -- --dist "debian" --release "buster" –arch amd64
+    ![a](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/99ed594c-a0f1-4403-bb26-4f18788319a8)
+
+2. create microservice4
+    sudo lxc-create -n microservice4 -t download -- --dist "debian" --release "buster" –arch amd64
+    ![b](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/44f558a2-d399-48fa-aa20-459165a30287)
+
+3. create microservice5
+    sudo lxc-create -n microservice5 -t download -- --dist "debian" --release "buster" –arch amd64
+    ![c](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/859a386a-925c-4bfa-9469-4b4d8433662b)
+
+4. menjalankan semua microservice 3-5
+    lxc-start -n microservice3
+    lxc-start -n microservice4
+    lxc-start -n microservice5
+    ![d](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/7c7402d4-f1a7-45b1-81c7-2acc0b75e8d7)
+
+5. konfigurasi microservice3 (update dan install nginx)
+    lxc-attach microservice3
+    apt update
+    apt install nginx nano
+    ![e](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/dfd7990c-2e1e-4185-960a-947c84a98c90)
+
+    nano /etc/hosts
+    ![f](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/6a3cfe52-e30b-4575-b057-7e07897790b0)
+
+    exit
+
+6. konfigurasi microservice4 (update dan install nginx)
+    lxc-attach microservice4
+    apt update
+    apt install nginx nano
+    ![g](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/62f57e8d-e6db-4946-ad3c-a7e57ff46b2b)
+
+    nano /etc/hosts
+    ![h](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/a0fe0929-c842-4778-97d4-bc2f5fd385ed)
+
+    exit
+
+7. konfigurasi microservice5 (update dan install nginx)
+    lxc-attach microservice5
+    apt update
+    apt install nginx nano
+    ![i](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/4eebcc5d-8a1d-4eac-bfe3-551f2a036f29)
+
+    nano /etc/hosts
+    ![j](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/058a849f-48a1-4711-a34c-43336914b818)
+
+
+    exit 
+
+8. konfigurasi host WSL
+   nano /etc/hosts
+    ![k](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/141729c3-45fa-4f2c-a6f9-388115f5b292)
+
+    sudo nano /etc/nginx/sites-available/sister.local
+    ![l](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/c15592e4-79c8-47a9-8985-6ce62ee43dc2)
+
+    nginx -t	
+    nginx -s reload
+    ![m](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/0c5aade9-6752-40fd-b53e-38d45f17c237)
+
+    curl -i app.sister.local
+    ![n](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/8032ce3b-7aac-4480-a081-b84281c97ca1)
+
+    tail -f /var/log/nginx/app.sister.local-access.log
+    ![o](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/ad85b839-d863-4063-965b-86891c2e5fd9)
+

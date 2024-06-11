@@ -4,3 +4,133 @@ NIM   :1203210110
 
 1. membuat microservice 1
 lxc-create --name microservice1 --template download -- --dist "ubuntu" --release "focal" --arch amd64
+![1](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/2e3d4cea-2412-42b6-8c6d-872759cd70e2)
+
+2. membuat microservice 2
+lxc-create --name microservice2 --template download -- --dist "ubuntu" --release "focal" --arch amd64
+![2](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/d50fdd1d-2703-4f97-ba11-abd74cf63aad)
+
+3. command # ip r -> untuk mengetahui ip dan subnet server dan microservice
+ip r
+![3](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/0d1735fd-5646-4714-bdda-489d4fab613b)
+
+4. masuk ke microservice1 dan microservice2 lalu install nginx dan network manager
+lxc-attach -n microservice1
+sudo apt install nginx nginx-extras
+sudo apt install network-manager
+![4](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/826772fa-2ada-4a20-bab6-7edbe3236c29)
+
+sudo lxc-attach -n microservice2
+sudo apt update
+sudo apt install nginx nginx-extras
+sudo apt install network-manager
+![5](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/155d6255-fefe-401b-90ca-c5d3ed3f59a3)
+
+5. setting static IP di microservice1
+nano /etc/netplan/10-lxc.yaml
+![6](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/a67d937e-78f2-46c6-ade9-e2bf516e3092)
+
+sudo netplan apply
+ifconfig
+![7](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/586a8510-5b77-4f82-b5ca-c703b41147d2)
+
+6. setting network interfaces
+nano /etc/network/interfaces
+![8](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/f587d3f3-6b66-468d-ae83-0297a4471a3c)
+
+7. restart network manager
+sudo systemctl restart NetworkManager
+ifconfig
+![9](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/4b958383-7752-4c45-879c-ea146dd8f7e1)
+
+8. setting nginx
+cd /etc/nginx/sites-available
+touch microservice1.dev
+nano microservice1.dev
+![10](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/7e378db6-682a-450a-96d8-d3b471a061a9)
+
+cd ../sites-enabled 
+ln -s /etc/nginx/sites-available/microservice1.dev . 
+nginx -t 
+nginx -s reload 
+nano /etc/hosts
+![11](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/25cf565c-242e-498e-88b0-6c5d94d364c2)
+
+cd /var/www/html 
+mkdir microservice1
+cp index.nginx-debian.html microservice1/index.html 
+cd microservice1
+nano index.html
+![12](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/aeb7ee0d-1db1-4426-8713-6123f3bc8016)
+
+9. lakukan curl ke microservice1
+curl -i http://microservice1.dev
+![13](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/7808e61f-686c-46bc-a5f8-b5d0351067f6)
+
+10. setting IP static microservice2
+apt install nano net-tools curl 
+sudo nano /etc/netplan/10-lxc.yaml 
+![14](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/8e086a4d-6827-4637-aedc-3987097b89bf)
+
+sudo netplan apply 
+ifconfig
+![15](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/a3c78623-6db5-48f3-9e5d-ef16f4dfd390)
+
+nano /etc/network/interfaces
+![16](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/b4c8fcd4-2d44-4a43-b9d1-d4f6e222532f)
+
+sudo systemctl restart NetworkManager
+ifconfig
+![17](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/18948bb2-ac0b-45bb-8042-cda2c5d8414e)
+
+setting nginx
+cd /etc/nginx/sites-available
+touch microservice2.dev
+nano microservice2.dev
+![18](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/084fd3bf-57ab-4d3c-8f50-2d994670dad5)
+
+cd ../sites-enabled
+ln -s /etc/nginx/sites-available/microservice2.dev
+nginx -t
+nginx -s reload
+nano /etc/hosts
+![19](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/854ad00a-a9f8-4360-a6bd-f0f75fb5584e)
+
+cd /var/www/html 
+mkdir microservice2 
+cp index.nginx-debian.html microservice2/index.html 
+cd microservice2
+nano index.html
+![20](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/cb2f4685-2857-4067-922f-57ac0799db3f)
+
+curl -i http://microservice2.dev
+![21](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/53c1df1e-ad31-43db-b0f2-5e7030fb6b54)
+
+11. setting host di WSL
+nano /etc/hosts
+![22](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/1d17fbbc-fd60-4dbf-9f0c-e8b5348fcac2)
+
+cd /etc/nginx/sites-available
+touch sister.local
+nano sister.local
+![23](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/5940113a-5e64-428d-8f65-18ede827cbdf)
+
+cd ../sites-enabled
+sudo ln -s /etc/nginx/sites-available/sister.local .
+sudo nginx -t
+sudo nginx -s reload
+![24](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/9941abb5-75cb-4633-89c1-962e266d8222)
+
+Check apakah sudah ter-route dengan benar
+curl -i http://sister.local
+![25](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/d2afc329-22ac-4425-a87e-5565b7872744)
+
+curl -i http://sister.local/blog
+![26](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/e86c0343-8857-41c3-9d0f-f4395828637e)
+
+curl -i http://sister.local/aboutus
+![27](https://github.com/pd2in/Sistem-Terdistribusi-/assets/139700943/f8e31a8b-8222-443f-b843-bd929e6553ab)
+
+
+
+
